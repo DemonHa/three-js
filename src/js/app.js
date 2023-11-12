@@ -1,4 +1,5 @@
 import One from "./../assets/1.jpeg";
+import { VRButton } from "./VrButton";
 
 var sceneWidth;
 var sceneHeight;
@@ -69,6 +70,7 @@ function createScene(){
   renderer.shadowMap.enabled = true;//enable shadow
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setSize( sceneWidth, sceneHeight );
+  renderer.vr.enabled = true;
   dom = document.getElementById('TutContainer');
 	dom.appendChild(renderer.domElement);
 	//stats = new Stats();
@@ -78,6 +80,8 @@ function createScene(){
 	addHero();
 	addLight();
 	addExplosion();
+
+	document.body.appendChild( VRButton.createButton( renderer ) );
 
   const panoSphereGeo = new THREE.SphereGeometry( 500, 256, 256 );
 
@@ -461,8 +465,8 @@ function doExplosionLogic(){
 	particleGeometry.verticesNeedUpdate = true;
 }
 function explode(){
-	particles.position.y=2;
-	particles.position.z=4.8;
+	particles.position.y=heroSphere.position.y;
+	particles.position.z=heroSphere.position.z - 1;
 	particles.position.x=heroSphere.position.x;
 	for (var i = 0; i < particleCount; i ++ ) {
 		var vertex = new THREE.Vector3();
